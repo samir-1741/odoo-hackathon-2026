@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odoo Hackathon 2026</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">🚀 HackProject</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#dashboard">Dashboard</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+        <h1>Welcome to Our Project</h1>
+        <p>Built for Odoo Hackathon 2026 🏆</p>
+        <button class="btn-primary" onclick="loadItems()">Get Started</button>
+    </section>
+
+    <!-- FORM SECTION -->
+    <section class="form-section" id="features">
+        <div class="card">
+            <h2>Add New Item</h2>
+            <div class="form-group">
+                <label>Name *</label>
+                <input type="text" id="itemName" placeholder="Enter name..." />
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" id="itemDesc" placeholder="Enter description..." />
+            </div>
+            <button class="btn-primary" onclick="addItem()">Add Item</button>
+            <p id="formMessage" class="message"></p>
+        </div>
+    </section>
+
+    <!-- DASHBOARD / LIST -->
+    <section class="dashboard" id="dashboard">
+        <h2>All Items</h2>
+        <div id="itemsList" class="items-grid">
+            <p>Click "Get Started" to load items...</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>Made with ❤️ by Team [Your Name] | Odoo Hackathon 2026</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
