@@ -8,9 +8,9 @@
 
 | Name | Role | GitHub |
 |------|------|--------|
-| Atik Saiyad | Backend + Integration | @atik-github |
-| [Member 2] | Frontend (React/HTML/CSS) | @member2 |
-| [Member 3] | Database + Testing | @member3 |
+| Atik Saiyad | Backend + Integration |@ATIKSAIYAD27-github |
+| samir sumra | Frontend (React/HTML/CSS)  |
+| krish nayi | Database + Testing  |
 
 ---
 
@@ -20,7 +20,7 @@
 |-------|-----------|
 | Frontend | HTML, CSS, JavaScript |
 | Backend | Python (Flask) |
-| Database | SQLite / SQL |
+| Database |  SQL |
 | Version Control | Git + GitHub |
 
 ---
