@@ -1,0 +1,152 @@
+<!-- Navigation -->
+<nav class="fixed w-full z-50 transition-all duration-500" 
+     [ngClass]="(isScrolled || isAuthPage) ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo -->
+            <a routerLink="/" class="flex-shrink-0 flex items-center group cursor-pointer">
+                <img src="/logo.png" alt="Nextrip" class="h-12 w-auto transform transition-transform duration-300 group-hover:scale-105">
+                <div class="ml-3 flex flex-col justify-center">
+                    <span class="text-2xl font-black tracking-tighter font-['Poppins'] leading-none" [ngClass]="(isScrolled || isAuthPage) ? 'text-gray-900' : 'text-white'">
+                        Nex<span class="text-red-600">trip</span>
+                    </span>
+                    <span class="text-[9px] uppercase tracking-[0.3em] font-bold leading-none mt-1" [ngClass]="(isScrolled || isAuthPage) ? 'text-gray-500' : 'text-white/60'">Premium Holidays</span>
+                </div>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div *ngIf="!isAuthPage" class="hidden md:flex items-center space-x-1">
+                <a routerLink="/flights" routerLinkActive="text-red-600 bg-red-50" [ngClass]="isScrolled ? 'text-gray-700 hover:text-red-600' : 'text-white/90'" class="px-5 py-2.5 rounded-xl font-medium transition-all cursor-pointer text-sm">Flights</a>
+                <a routerLink="/hotels" routerLinkActive="text-red-600 bg-red-50" [ngClass]="isScrolled ? 'text-gray-700 hover:text-red-600' : 'text-white/90'" class="px-5 py-2.5 rounded-xl font-medium transition-all cursor-pointer text-sm">Hotels</a>
+                <a routerLink="/trips" routerLinkActive="text-red-600 bg-red-50" [ngClass]="isScrolled ? 'text-gray-700 hover:text-red-600' : 'text-white/90'" class="px-5 py-2.5 rounded-xl font-medium transition-all cursor-pointer text-sm">My Trips</a>
+            </div>
+
+            <!-- Auth Buttons -->
+            <div *ngIf="!isAuthPage" class="hidden md:flex items-center space-x-4">
+                <ng-container *ngIf="!(authService.user$ | async); else userMenu">
+                    <a routerLink="/login" [ngClass]="isScrolled ? 'text-red-600' : 'text-white'" class="font-medium px-5 py-2.5 rounded-xl transition-all cursor-pointer text-sm">Login</a>
+                    <a routerLink="/register" class="btn-primary cursor-pointer text-sm">Sign Up</a>
+                </ng-container>
+                <ng-template #userMenu>
+                    <a routerLink="/profile" class="flex items-center space-x-3 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-gray-100 hover:shadow-lg transition-all cursor-pointer">
+                        <span class="text-sm font-bold text-gray-900">{{ (authService.user$ | async)?.firstName }}</span>
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 to-rose-600 text-white flex items-center justify-center text-xs font-black shadow-md">
+                            {{ (authService.user$ | async)?.firstName?.charAt(0) }}
+                        </div>
+                    </a>
+                </ng-template>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button *ngIf="!isAuthPage" (click)="toggleMobileMenu()" class="md:hidden p-2 rounded-xl" [ngClass]="isScrolled ? 'text-gray-900' : 'text-white'">
+                <span class="material-icons">{{isMobileMenuOpen ? 'close' : 'menu'}}</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div *ngIf="isMobileMenuOpen && !isAuthPage" class="md:hidden bg-white/95 backdrop-blur-xl border-t border-gray-100 shadow-2xl">
+        <div class="px-6 py-8 space-y-4">
+            <a routerLink="/flights" (click)="isMobileMenuOpen=false" class="block px-4 py-3 rounded-xl text-gray-700 font-medium hover:bg-red-50 hover:text-red-600 transition-all">Flights</a>
+            <a routerLink="/hotels" (click)="isMobileMenuOpen=false" class="block px-4 py-3 rounded-xl text-gray-700 font-medium hover:bg-red-50 hover:text-red-600 transition-all">Hotels</a>
+            <a routerLink="/trips" (click)="isMobileMenuOpen=false" class="block px-4 py-3 rounded-xl text-gray-700 font-medium hover:bg-red-50 hover:text-red-600 transition-all">My Trips</a>
+            <hr class="border-gray-100">
+            <a routerLink="/login" (click)="isMobileMenuOpen=false" class="block px-4 py-3 rounded-xl text-red-600 font-bold text-center">Login</a>
+            <a routerLink="/register" (click)="isMobileMenuOpen=false" class="block btn-primary text-center">Sign Up</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Router Content -->
+<main class="min-h-screen">
+    <router-outlet></router-outlet>
+</main>
+
+<!-- Advanced Footer -->
+<footer *ngIf="!isAuthPage" class="bg-gray-900 text-white pt-20 pb-8 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-red-500/5 rounded-full blur-[150px] translate-x-1/2 -translate-y-1/2"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        <!-- CTA Banner -->
+        <div class="bg-gradient-to-r from-red-600 to-rose-600 rounded-[40px] p-10 md:p-16 mb-16 flex flex-col md:flex-row items-center justify-between shadow-2xl shadow-red-500/20 -mt-32 relative z-20">
+            <div>
+                <h3 class="text-3xl md:text-4xl font-black text-white tracking-tighter mb-2">Ready for your next adventure?</h3>
+                <p class="text-white/80 font-medium">Join 25,000+ travelers who plan with Nextrip.</p>
+            </div>
+            <a routerLink="/register" class="mt-6 md:mt-0 bg-white text-red-600 px-10 py-4 rounded-full font-black text-sm tracking-widest uppercase shadow-xl hover:scale-105 transition-transform">
+                GET STARTED FREE
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-12 mb-12">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center mb-6 cursor-pointer group">
+                    <div class="relative h-12 w-12 flex-shrink-0 items-center justify-center bg-white rounded-xl p-1 shadow-md">
+                        <img src="/logo.png" alt="Nextrip Logo" class="w-full h-full object-contain transform transition-transform duration-300 group-hover:scale-105 relative z-10">
+                    </div>
+                    <div class="ml-3 flex flex-col justify-center">
+                        <span class="text-2xl font-black tracking-tighter text-white font-['Poppins'] leading-none">
+                            Nex<span class="text-red-500">trip</span>
+                        </span>
+                        <span class="text-[9px] uppercase tracking-[0.3em] text-gray-400 font-bold leading-none mt-1">Premium Holidays</span>
+                    </div>
+                </div>
+                <p class="text-gray-400 text-sm mb-6 leading-relaxed max-w-sm">Your ultimate AI-powered travel companion for planning, budgeting, and exploring the world. Built with ❤️ in India.</p>
+                <!-- Social Icons -->
+                <div class="flex space-x-3">
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-red-600 hover:text-white transition-all">
+                        <span class="text-sm font-bold">f</span>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-red-600 hover:text-white transition-all">
+                        <span class="text-sm font-bold">X</span>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-red-600 hover:text-white transition-all">
+                        <span class="text-sm font-bold">in</span>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:bg-red-600 hover:text-white transition-all">
+                        <span class="text-sm font-bold">YT</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="font-bold mb-6 uppercase tracking-widest text-[10px] text-white">Company</h4>
+                <ul class="space-y-3 text-sm text-gray-400">
+                    <li><a href="#" class="hover:text-white transition-colors hover:translate-x-1 inline-block">About Us</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors hover:translate-x-1 inline-block">Careers</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors hover:translate-x-1 inline-block">Press</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors hover:translate-x-1 inline-block">Blog</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold mb-6 uppercase tracking-widest text-[10px] text-white">Support</h4>
+                <ul class="space-y-3 text-sm text-gray-400">
+                    <li><a href="#" class="hover:text-white transition-colors hover:translate-x-1 inline-block">Help Center</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors hover:translate-x-1 inline-block">Safety Center</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors hover:translate-x-1 inline-block">Guidelines</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors hover:translate-x-1 inline-block">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold mb-6 uppercase tracking-widest text-[10px] text-white">Legal</h4>
+                <ul class="space-y-3 text-sm text-gray-400">
+                    <li><a href="#" class="hover:text-white transition-colors hover:translate-x-1 inline-block">Cookies Policy</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors hover:translate-x-1 inline-block">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors hover:translate-x-1 inline-block">Terms of Service</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors hover:translate-x-1 inline-block">Refund Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+            <p>&copy; 2026 Nextrip. All rights reserved. Made with ❤️ in India</p>
+            <div class="flex items-center space-x-6 mt-4 md:mt-0">
+                <span class="text-[10px] uppercase tracking-widest font-bold text-gray-600">Secured by</span>
+                <span class="text-xs font-bold text-gray-400">🔒 256-bit SSL</span>
+                <span class="text-xs font-bold text-gray-400">🛡️ PCI DSS</span>
+            </div>
+        </div>
+    </div>
+</footer>

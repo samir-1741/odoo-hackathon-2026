@@ -1,0 +1,268 @@
+<!-- ── Hero Banner ── -->
+<div class="hero-banner">
+  <div class="avatar-area">
+    <div class="avatar-wrap" (click)="avatarInput.click()">
+      <div class="avatar-circle" id="avatarEl">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="38" height="38"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+      </div>
+      <div class="avatar-edit-overlay">
+        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <span>Add Photo</span>
+      </div>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-row">
+        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
+        <span>{{formData.phone}}</span>
+      </div>
+      <div class="hero-row">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span>{{formData.email}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="file" #avatarInput accept="image/*" style="display:none" (change)="onAvatarChange($event)" />
+
+<!-- ── Page ── -->
+<div class="page-wrap">
+<div class="profile-card">
+
+  <!-- Header -->
+  <div class="card-header">
+    <div class="card-title">My Profile</div>
+    <button class="save-btn" (click)="saveProfile()">SAVE</button>
+  </div>
+
+  <!-- Personalize -->
+  <div class="personalize-strip">
+    <div class="ps-icon">🏖️</div>
+    <div class="ps-txt">
+      <strong>Let us personalize your travel!</strong>
+      <span>Tell us your details to help us plan better trips for you!</span>
+    </div>
+    <span class="ps-link">Add Gender →</span>
+  </div>
+
+  <!-- General Information -->
+  <div class="sec-label">General Information</div>
+  <div class="form-area">
+    <div class="fg fg-2">
+      <div class="fw" [class.filled]="formData.fFirst">
+        <input type="text" [(ngModel)]="formData.fFirst" placeholder="First & Middle Name" />
+        <label>FIRST &amp; MIDDLE NAME</label>
+      </div>
+      <div class="fw" [class.filled]="formData.fLast">
+        <input type="text" [(ngModel)]="formData.fLast" placeholder="Last Name" />
+        <label>LAST NAME</label>
+      </div>
+    </div>
+    <div class="fg fg-3">
+      <div class="fw" [class.filled]="formData.fGender">
+        <select [(ngModel)]="formData.fGender">
+          <option value="">Select</option>
+          <option>Male</option><option>Female</option><option>Other</option>
+        </select>
+        <label>GENDER</label>
+        <span class="arr"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="fw" [class.filled]="formData.fDob">
+        <input type="date" [(ngModel)]="formData.fDob" />
+        <label>DATE OF BIRTH</label>
+      </div>
+      <div class="fw" [class.filled]="formData.fNationality">
+        <select [(ngModel)]="formData.fNationality">
+          <option value="">Select</option>
+          <option>Indian</option><option>American</option><option>British</option><option>Other</option>
+        </select>
+        <label>NATIONALITY</label>
+        <span class="arr"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+    </div>
+    <div class="fg fg-2">
+      <div class="fw" [class.filled]="formData.fMarital">
+        <select [(ngModel)]="formData.fMarital">
+          <option value="">Select</option>
+          <option>Single</option><option>Married</option><option>Other</option>
+        </select>
+        <label>MARITAL STATUS</label>
+        <span class="arr"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="fw" [class.filled]="formData.fAnniversary">
+        <input type="date" [(ngModel)]="formData.fAnniversary" />
+        <label>ANNIVERSARY</label>
+      </div>
+    </div>
+    <div class="fg fg-2">
+      <div class="fw" [class.filled]="formData.fCity">
+        <input type="text" [(ngModel)]="formData.fCity" placeholder="City of Residence" />
+        <label>CITY OF RESIDENCE</label>
+      </div>
+      <div class="fw" [class.filled]="formData.fState">
+        <select [(ngModel)]="formData.fState">
+          <option value="">Select</option>
+          <option>Delhi</option><option>Gujarat</option><option>Maharashtra</option>
+          <option>Karnataka</option><option>Tamil Nadu</option><option>Rajasthan</option>
+          <option>Uttar Pradesh</option><option>West Bengal</option><option>Other</option>
+        </select>
+        <label>STATE</label>
+        <span class="arr"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#999;margin-top:-4px;">Required for GST purpose on your tax invoice</p>
+  </div>
+
+  <!-- Contact Details -->
+  <div class="divider"></div>
+  <div class="sec-label">Contact Details</div>
+  <div class="sec-sub">Add contact information to receive booking details &amp; other alerts</div>
+  <div class="form-area" style="padding-top:0;">
+    <div class="fg fg-2">
+      <div class="cf-box">
+        <div>
+          <div class="cf-lbl">MOBILE NUMBER</div>
+          <div class="cf-val">{{formData.phone}}</div>
+        </div>
+        <button class="cf-edit" (click)="editContact('phone')">Edit</button>
+      </div>
+      <div class="cf-box">
+        <div>
+          <div class="cf-lbl">EMAIL ID</div>
+          <div class="cf-val">{{formData.email}}</div>
+        </div>
+        <button class="cf-edit" (click)="editContact('email')">Edit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Documents Details -->
+  <div class="divider"></div>
+  <div class="sec-label">Documents Details</div>
+  <div class="form-area">
+    <div class="fg fg-2">
+      <div class="fw" [class.filled]="formData.fPassport">
+        <input type="text" [(ngModel)]="formData.fPassport" placeholder="Passport No." />
+        <label>PASSPORT NO.</label>
+      </div>
+      <div class="fw" [class.filled]="formData.fExpiry">
+        <input type="date" [(ngModel)]="formData.fExpiry" />
+        <label>EXPIRY DATE</label>
+      </div>
+    </div>
+    <div class="fg fg-2">
+      <div class="fw" [class.filled]="formData.fIssuing">
+        <select [(ngModel)]="formData.fIssuing">
+          <option value="">Select</option>
+          <option>India</option><option>USA</option><option>UK</option><option>Other</option>
+        </select>
+        <label>ISSUING COUNTRY</label>
+        <span class="arr"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="fw" [class.filled]="formData.fPan">
+        <input type="text" [(ngModel)]="formData.fPan" placeholder="PAN Card Number" />
+        <label>PAN CARD NUMBER</label>
+      </div>
+    </div>
+  </div>
+  <div class="form-note"><strong>NOTE:</strong> Your PAN No. will only be used for international bookings as per RBI Guidelines</div>
+
+  <!-- Membership -->
+  <div class="divider"></div>
+  <div class="sec-label" style="margin-bottom:12px;">Membership</div>
+  <div class="mem-strip">
+    <div class="mem-ico">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </div>
+    <div class="mem-body">
+      <strong>Elite Member · 84,290 pts</strong>
+      <span>15,710 pts away from Diamond tier</span>
+    </div>
+    <div class="mem-chev">
+      <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+  </div>
+
+  <!-- Preferences -->
+  <div class="divider"></div>
+  <div class="pref-block">
+    <div class="pref-title">Preferences</div>
+    <div class="pref-row">
+      <div><div class="pref-name">Email Notifications</div><div class="pref-desc">Deals, offers &amp; booking updates</div></div>
+      <div class="toggle" [class.on]="formData.prefEmail" (click)="togglePref('prefEmail')"><div class="toggle-knob"></div></div>
+    </div>
+    <div class="pref-row">
+      <div><div class="pref-name">SMS Alerts</div><div class="pref-desc">Booking confirmations &amp; reminders</div></div>
+      <div class="toggle" [class.on]="formData.prefSms" (click)="togglePref('prefSms')"><div class="toggle-knob"></div></div>
+    </div>
+    <div class="pref-row">
+      <div><div class="pref-name">WhatsApp Updates</div><div class="pref-desc">Trip info &amp; travel alerts</div></div>
+      <div class="toggle" [class.on]="formData.prefWa" (click)="togglePref('prefWa')"><div class="toggle-knob"></div></div>
+    </div>
+  </div>
+
+  <!-- Logout -->
+  <div class="logout-row">
+    <button class="logout-btn" (click)="logout()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Log Out
+    </button>
+  </div>
+
+  <!-- Reset Password -->
+  <div class="divider"></div>
+  <div class="reset-row">
+    <div class="reset-info">
+      <div class="reset-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div>
+        <div class="reset-title">Reset Password</div>
+        <div class="reset-sub">Update your account password securely</div>
+      </div>
+    </div>
+    <button class="reset-btn" (click)="openResetModal()">Reset Password</button>
+  </div>
+
+</div><!-- /profile-card -->
+</div><!-- /page-wrap -->
+
+<!-- ── Reset Password Modal ── -->
+<div class="modal-overlay" [class.open]="isResetModalOpen" (click)="closeModalBg($event)">
+  <div class="modal-box">
+    <button class="modal-close" (click)="closeResetModal()">✕</button>
+    <div class="modal-head">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <div class="modal-title">Reset Password</div>
+    </div>
+    <div class="modal-desc">Your password must be at least 8 characters long and include both small and uppercase letters, numbers, and special characters (e.g., $!&#64;%)</div>
+
+    <div class="pw-field">
+      <input type="password" id="oldPw" placeholder="OLD PASSWORD" [(ngModel)]="oldPw" />
+      <button class="pw-eye" #btnOld (click)="togglePw('oldPw', btnOld)" type="button">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <div class="pw-error" [class.show]="errOld">Please enter your current password.</div>
+
+    <div class="pw-field">
+      <input type="password" id="newPw" placeholder="NEW PASSWORD" [(ngModel)]="newPw" />
+      <button class="pw-eye" #btnNew (click)="togglePw('newPw', btnNew)" type="button">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <div class="pw-error" [class.show]="errNew">Password must be at least 8 characters.</div>
+
+    <span class="forgot-link">Forgot your password?</span>
+
+    <div class="modal-btns">
+      <button class="btn-cancel" (click)="closeResetModal()">Cancel</button>
+      <button class="btn-reset" (click)="doReset()">RESET PASSWORD</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" [class.show]="showToast">
+  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/></svg>
+  <span>{{toastMsg}}</span>
+</div>

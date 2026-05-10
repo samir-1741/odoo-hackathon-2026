@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: #E31837; /* MakeMyTrip Red */
+    --primary-dark: #B9122B;
+    --primary-light: #FFF0F2;
+    --background: #FFFFFF;
+    --text-main: #222222;
+    --text-muted: #4A4A4A;
+  }
+  
+  body {
+    @apply bg-[var(--background)] text-[var(--text-main)] font-['Poppins',_sans-serif] m-0 p-0 antialiased overflow-x-hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .glassmorphism {
+    @apply bg-white/90 backdrop-blur-md border border-gray-100 shadow-[0_8px_32px_0_rgba(0,0,0,0.05)];
+  }
+
+  .premium-card {
+    @apply bg-white rounded-2xl p-6 shadow-lg shadow-gray-200/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-gray-300/50 border border-gray-100;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-[var(--primary)] to-[var(--primary-dark)] text-white px-8 py-3 rounded-full font-semibold shadow-md shadow-red-500/30 transition-all duration-300 hover:shadow-red-500/50 hover:scale-105 active:scale-95;
+  }
+
+  .btn-outline {
+    @apply border-2 border-[var(--primary)] text-[var(--primary)] px-8 py-3 rounded-full font-semibold hover:bg-[var(--primary-light)] transition-all duration-300 active:scale-95;
+  }
+}

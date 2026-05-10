@@ -1,0 +1,83 @@
+<div class="min-h-screen bg-gray-50 pt-10 pb-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Header -->
+    <div class="bg-white rounded-[32px] p-8 shadow-lg mb-8 flex flex-col md:flex-row justify-between items-center border border-gray-100">
+      <div class="flex items-center space-x-6">
+        <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-600">
+          <span class="material-icons">location_on</span>
+        </div>
+        <div class="text-left">
+          <span class="text-[10px] uppercase font-black text-red-500 tracking-widest block mb-1">Destination</span>
+          <div class="text-xl font-black text-gray-900">India — Luxury Stays</div>
+        </div>
+      </div>
+      <button class="bg-red-600 text-white px-8 py-3 rounded-2xl font-black text-xs uppercase tracking-widest">Modify Search</button>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="flex space-x-3 mb-8">
+      <button *ngFor="let cat of categories" (click)="selectedCategory = cat.key"
+              [class.bg-red-600]="selectedCategory === cat.key" [class.text-white]="selectedCategory === cat.key"
+              [class.bg-white]="selectedCategory !== cat.key"
+              class="flex items-center px-6 py-3 rounded-2xl font-bold text-sm border border-gray-100 hover:shadow-lg transition-all space-x-2">
+        <span class="material-icons text-sm">{{cat.icon}}</span>
+        <span>{{cat.label}}</span>
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <!-- Sidebar -->
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-[32px] p-8 shadow-sm border border-gray-100">
+           <h3 class="text-xs font-black text-gray-900 uppercase tracking-widest mb-8">Filters</h3>
+           <div class="mb-8">
+            <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Sort By</h4>
+            <select [(ngModel)]="sortBy" class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50 text-sm font-medium">
+              <option value="recommended">Recommended</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Top Rated</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotel Grid -->
+      <div class="lg:col-span-3 space-y-8">
+        <div *ngFor="let hotel of filteredHotels" class="bg-white rounded-[40px] overflow-hidden shadow-sm border border-gray-100 hover:shadow-2xl transition-all duration-500 flex flex-col md:flex-row">
+          <div class="md:w-2/5 h-64 md:h-auto relative overflow-hidden">
+            <img [src]="hotel.image" class="w-full h-full object-cover">
+            <div class="absolute top-6 left-6 bg-red-600 text-white px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">{{hotel.badge}}</div>
+          </div>
+          <div class="md:w-3/5 p-10 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-start mb-2">
+                <h3 class="text-3xl font-black text-gray-900 tracking-tighter">{{hotel.name}}</h3>
+                <div class="flex items-center text-red-600 font-black text-sm">
+                  <span class="material-icons text-sm mr-1">star</span> {{hotel.rating}}
+                </div>
+              </div>
+              <p class="text-gray-400 text-xs font-bold uppercase tracking-widest mb-6 flex items-center">
+                <span class="material-icons text-sm mr-1">location_on</span> {{hotel.location}}
+              </p>
+              <div class="flex flex-wrap gap-2 mb-8">
+                <span *ngFor="let am of hotel.amenities" class="px-3 py-1 bg-gray-50 rounded-full text-[10px] font-bold text-gray-500 border border-gray-100">{{am}}</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-8 border-t border-gray-50">
+              <div>
+                <span class="text-[10px] text-gray-400 font-black uppercase tracking-widest block">Per Night</span>
+                <span class="text-2xl font-black text-gray-900">{{formatPrice(hotel.price)}}</span>
+              </div>
+              <button (click)="bookHotel(hotel)" [disabled]="isBooking" class="bg-gray-900 hover:bg-red-600 text-white px-8 py-3 rounded-2xl font-black text-xs uppercase tracking-widest transition-all hover:scale-105 flex items-center">
+                 <span *ngIf="isBooking" class="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></span>
+                 {{ isBooking ? 'BOOKING...' : 'RESERVE NOW' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

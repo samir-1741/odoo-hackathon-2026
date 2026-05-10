@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.DS_Store
+*.log
+nextrip/frontend/node_modules/
+nextrip/backend/node_modules/
+nextrip/frontend/.angular/
+nextrip/frontend/dist/
+*.zip

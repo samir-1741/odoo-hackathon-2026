@@ -1,0 +1,173 @@
+<!-- Hero Section -->
+<div class="relative h-[60vh] min-h-[450px] w-full overflow-hidden bg-red-600 flex items-center justify-center">
+  <div class="absolute inset-0 z-0">
+    <img [src]="currentPlace.heroImage" [alt]="currentPlace.name" class="w-full h-full object-cover opacity-50 mix-blend-multiply">
+    <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
+  </div>
+
+  <div class="relative z-10 text-center max-w-5xl px-6 pt-20">
+    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-red-600 text-xs font-bold tracking-[0.2em] uppercase mb-6 shadow-xl">
+      <span class="material-icons text-[14px]">location_on</span>
+      {{currentPlace.country}}
+    </span>
+    <h1 class="text-7xl md:text-9xl font-black text-white tracking-tighter leading-none mb-6 drop-shadow-lg">{{currentPlace.name}}</h1>
+    <div class="flex items-center justify-center gap-8 text-white font-medium">
+      <div class="flex items-center gap-2"><span class="material-icons text-white">star</span><span class="font-bold text-xl">{{currentPlace.rating}}</span> <span class="text-sm opacity-90">({{currentPlace.reviews}} reviews)</span></div>
+      <div class="flex items-center gap-2"><span class="material-icons text-white">thermostat</span><span class="font-bold text-xl">{{currentPlace.weather}}</span></div>
+      <div class="flex items-center gap-2"><span class="material-icons text-white">schedule</span><span class="font-bold text-xl">{{currentPlace.duration}}</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Sticky Quick Bar -->
+<div class="sticky top-20 z-40 w-full bg-white border-b border-red-100 shadow-sm transition-all" [class.py-4]="!isScrolled" [class.py-2]="isScrolled">
+  <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+    <div class="flex gap-8">
+      <button (click)="setTab('overview')" [class.text-red-600]="activeTab === 'overview'" [class.border-red-600]="activeTab === 'overview'" class="font-bold text-sm tracking-wider uppercase border-b-2 border-transparent hover:text-red-600 transition-all pb-1 text-gray-500">Overview</button>
+      <button (click)="setTab('itinerary')" [class.text-red-600]="activeTab === 'itinerary'" [class.border-red-600]="activeTab === 'itinerary'" class="font-bold text-sm tracking-wider uppercase border-b-2 border-transparent hover:text-red-600 transition-all pb-1 text-gray-500">Itinerary</button>
+      <button (click)="setTab('gallery')" [class.text-red-600]="activeTab === 'gallery'" [class.border-red-600]="activeTab === 'gallery'" class="font-bold text-sm tracking-wider uppercase border-b-2 border-transparent hover:text-red-600 transition-all pb-1 text-gray-500">Gallery</button>
+    </div>
+    <div class="flex items-center gap-6 hidden md:flex">
+      <div class="text-right">
+        <div class="text-xs text-red-500 font-bold uppercase tracking-wider">Starting from</div>
+        <div class="text-2xl font-black text-red-600">{{currentPlace.price}}</div>
+      </div>
+      <button (click)="bookTrip()" [disabled]="isBooking" class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full font-bold tracking-widest text-sm shadow-xl shadow-red-500/30 transition-all hover:scale-105 border-2 border-transparent hover:border-red-200 flex items-center">
+        <span *ngIf="isBooking" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></span>
+        {{ isBooking ? 'BOOKING...' : 'BOOK NOW' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="bg-white min-h-screen py-16">
+  <div class="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row gap-12">
+    
+    <!-- Left Column (Content) -->
+    <div class="lg:w-2/3">
+      
+      <!-- Overview Tab -->
+      <div *ngIf="activeTab === 'overview'" class="animate-fade-in">
+        <h2 class="text-4xl font-black text-red-600 mb-6 tracking-tight">About {{currentPlace.name}}</h2>
+        <p class="text-lg text-gray-800 leading-relaxed mb-12 font-medium">{{currentPlace.description}}</p>
+        
+        <div class="bg-white rounded-3xl p-8 shadow-lg border border-red-100 mb-12">
+          <h3 class="text-xl font-bold text-red-600 mb-6 flex items-center gap-2"><span class="material-icons">info</span> Good to Know</h3>
+          <div class="grid grid-cols-2 gap-8">
+            <div>
+              <div class="text-sm font-bold text-red-400 uppercase tracking-widest mb-1">Best Time to Visit</div>
+              <div class="font-black text-gray-900">{{currentPlace.bestTimeToVisit}}</div>
+            </div>
+            <div>
+              <div class="text-sm font-bold text-red-400 uppercase tracking-widest mb-1">Currency</div>
+              <div class="font-black text-gray-900">{{currentPlace.country === 'India' ? 'Indian Rupee (INR)' : 'Local Currency'}}</div>
+            </div>
+            <div>
+              <div class="text-sm font-bold text-red-400 uppercase tracking-widest mb-1">Language</div>
+              <div class="font-black text-gray-900">{{currentPlace.country === 'India' ? 'Hindi / English' : 'Local / English'}}</div>
+            </div>
+            <div>
+              <div class="text-sm font-bold text-red-400 uppercase tracking-widest mb-1">Visa Requirement</div>
+              <div class="font-black text-gray-900">{{currentPlace.country === 'India' ? 'Not Required (Domestic)' : 'E-Visa Available'}}</div>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="text-3xl font-black text-red-600 mb-8 tracking-tight">Top Attractions</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div *ngFor="let attr of currentPlace.attractions" class="group relative h-64 rounded-[30px] overflow-hidden cursor-pointer shadow-lg border-2 border-transparent hover:border-red-400 transition-all">
+            <img [src]="attr.image" [alt]="attr.name" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-red-900/90 via-black/20 to-transparent"></div>
+            <div class="absolute bottom-6 left-6">
+              <span class="px-3 py-1 bg-red-600 rounded-full text-xs font-bold text-white mb-2 inline-block shadow-md">{{attr.type}}</span>
+              <h4 class="text-xl font-bold text-white drop-shadow-md">{{attr.name}}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Itinerary Tab -->
+      <div *ngIf="activeTab === 'itinerary'" class="animate-fade-in">
+        <h2 class="text-4xl font-black text-red-600 mb-10 tracking-tight">Your AI-Planned Journey</h2>
+        <div class="relative border-l-2 border-red-200 ml-4 md:ml-6 space-y-12">
+          <div *ngFor="let day of currentPlace.itinerary" class="relative pl-8 md:pl-12">
+            <div class="absolute -left-[13px] top-0 w-6 h-6 rounded-full bg-red-600 border-4 border-white shadow-lg flex items-center justify-center"></div>
+            <div class="bg-white rounded-3xl p-8 shadow-lg border border-red-100 hover:shadow-xl hover:border-red-300 transition-all relative top-[-6px]">
+              <div class="bg-red-50 text-red-600 font-black tracking-widest text-sm uppercase mb-3 inline-block px-3 py-1 rounded-full">Day {{day.day}}</div>
+              <h3 class="text-2xl font-bold text-gray-900 mb-4">{{day.title}}</h3>
+              <p class="text-gray-800 leading-relaxed font-medium">{{day.desc}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gallery Tab -->
+      <div *ngIf="activeTab === 'gallery'" class="animate-fade-in">
+        <h2 class="text-4xl font-black text-red-600 mb-8 tracking-tight">Gallery</h2>
+        <div class="columns-1 md:columns-2 gap-6 space-y-6">
+          <div *ngFor="let attr of currentPlace.attractions" class="break-inside-avoid rounded-3xl overflow-hidden shadow-lg border-2 border-red-50 group">
+            <img [src]="attr.image" class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105">
+          </div>
+          <div class="break-inside-avoid rounded-3xl overflow-hidden shadow-lg border-2 border-red-50 group">
+            <img [src]="currentPlace.heroImage" class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column (Sidebar Booking Widget) -->
+    <div class="lg:w-1/3">
+      <div class="sticky top-40 bg-white rounded-[40px] p-8 shadow-2xl border-2 border-red-100">
+        <h3 class="text-2xl font-black text-red-600 mb-2">Book This Trip</h3>
+        <p class="text-sm text-gray-500 mb-8 font-medium">Secure your premium experience now.</p>
+        
+        <div class="space-y-4 mb-8">
+          <div class="bg-red-50/50 rounded-2xl p-4 border border-red-100 hover:border-red-300 transition-colors">
+            <label class="text-xs font-bold text-red-400 uppercase tracking-wider block mb-1">Travelers</label>
+            <div class="font-bold text-gray-900 flex justify-between items-center cursor-pointer">
+              <span>2 Adults, 0 Children</span>
+              <span class="material-icons text-red-500">expand_more</span>
+            </div>
+          </div>
+          <div class="bg-red-50/50 rounded-2xl p-4 border border-red-100 hover:border-red-300 transition-colors">
+            <label class="text-xs font-bold text-red-400 uppercase tracking-wider block mb-1">Dates</label>
+            <div class="font-bold text-gray-900 flex justify-between items-center cursor-pointer">
+              <span>Select Dates</span>
+              <span class="material-icons text-red-500">calendar_month</span>
+            </div>
+          </div>
+          <div class="bg-red-50/50 rounded-2xl p-4 border border-red-100 hover:border-red-300 transition-colors">
+            <label class="text-xs font-bold text-red-400 uppercase tracking-wider block mb-1">Package Tier</label>
+            <div class="font-bold text-gray-900 flex justify-between items-center cursor-pointer">
+              <span>Nextrip Premium (5-Star)</span>
+              <span class="material-icons text-red-500">expand_more</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-red-100 pt-6 mb-6">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-gray-600 font-medium">Base Price</span>
+            <span class="text-gray-900 font-bold">{{currentPlace.price}}</span>
+          </div>
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-gray-600 font-medium">Taxes & Fees</span>
+            <span class="text-gray-900 font-bold">Included</span>
+          </div>
+          <div class="flex justify-between items-center mt-6 pt-6 border-t border-red-200">
+            <span class="text-gray-900 font-black text-lg">Total</span>
+            <span class="text-red-600 font-black text-2xl">{{currentPlace.price}}</span>
+          </div>
+        </div>
+
+        <button (click)="bookTrip()" [disabled]="isBooking" class="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-2xl font-black tracking-widest text-sm shadow-xl shadow-red-500/30 transition-all hover:-translate-y-1 flex items-center justify-center">
+            <span *ngIf="isBooking" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></span>
+            {{ isBooking ? 'PROCESSING...' : 'CONTINUE TO PAYMENT' }}
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

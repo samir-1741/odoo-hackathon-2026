@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Profile — Nextrip</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Poppins', sans-serif; background: #f2f2f2; color: #222; min-height: 100vh; }
+
+  /* ── Topbar ── */
+  .topbar {
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.08);
+  }
+  .topbar-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+  .logo-box {
+    width: 34px; height: 34px;
+    background: #d63b2f;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-box svg { width: 19px; height: 19px; fill: #fff; }
+  /* ✅ FIX 1: logo-name red → black */
+  .logo-name { font-size: 18px; font-weight: 700; color: #111; letter-spacing: -0.4px; line-height: 1.1; }
+  .logo-sub { font-size: 8px; font-weight: 600; letter-spacing: 1.5px; color: #aaa; display: block; text-transform: uppercase; }
+
+  /* ✅ FIX 3: myCash properly aligned right */
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .mycash-btn {
+    display: flex; align-items: center; gap: 7px;
+    background: #fff8e1;
+    border: 1.5px solid #ffe082;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #e65100;
+    cursor: pointer;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .mycash-btn svg { width: 15px; height: 15px; fill: #f9a825; }
+
+  /* ── Hero Banner ── */
+  .hero-banner {
+    position: relative;
+    height: 185px;
+    background:
+      linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.45) 100%),
+      url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1400&q=80') center/cover no-repeat;
+    overflow: visible;
+  }
+
+  /* Avatar area */
+  .avatar-area {
+    position: absolute;
+    bottom: -50px;
+    left: 40px;
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    z-index: 5;
+  }
+  .avatar-wrap {
+    position: relative;
+    width: 96px; height: 96px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  /* Avatar circle — clean solid color, no background image */
+  .avatar-circle {
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    background: #d63b2f;
+    border: 4px solid #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px; font-weight: 700; color: #fff;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  }
+  .avatar-circle img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .avatar-edit-overlay {
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.5);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.2s; pointer-events: none;
+  }
+  .avatar-wrap:hover .avatar-edit-overlay { opacity: 1; }
+  .avatar-edit-overlay svg { width: 20px; height: 20px; fill: #fff; margin-bottom: 3px; }
+  .avatar-edit-overlay span { font-size: 9.5px; color: #fff; font-weight: 600; letter-spacing: 0.3px; }
+
+  /* Phone & email — ek line mein side by side like image 2 */
+  .hero-meta {
+    padding-bottom: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 22px;
+  }
+  .hero-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  }
+  .hero-row svg { width: 14px; height: 14px; flex-shrink: 0; fill: none; stroke: #fff; stroke-width: 2; }
+
+  /* ── Page Layout ── */
+  .page-wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 70px 20px 48px;
+  }
+
+  /* ── Profile Card ── */
+  .profile-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+
+  /* Card Header */
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 28px 16px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  /* ✅ FIX 1: card-title black */
+  .card-title { font-size: 19px; font-weight: 700; color: #111; }
+  .save-btn {
+    background: #d63b2f; color: #fff; border: none; border-radius: 8px;
+    padding: 9px 30px; font-size: 13px; font-weight: 600;
+    font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; letter-spacing: 0.4px;
+  }
+  .save-btn:hover { background: #b83228; }
+
+  /* Personalize strip */
+  .personalize-strip {
+    margin: 16px 28px 4px;
+    background: #eef3ff;
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .ps-icon { font-size: 22px; flex-shrink: 0; }
+  .ps-txt { flex: 1; }
+  .ps-txt strong { font-size: 13px; color: #222; display: block; font-weight: 600; }
+  .ps-txt span { font-size: 11.5px; color: #666; }
+  .ps-link { font-size: 12.5px; font-weight: 600; color: #1565c0; cursor: pointer; white-space: nowrap; }
+  .ps-link:hover { text-decoration: underline; }
+
+  /* Section label — ✅ FIX 1: black not red */
+  .sec-label {
+    font-size: 15px; font-weight: 700; color: #111;
+    padding: 20px 28px 0;
+  }
+  .sec-sub {
+    font-size: 11.5px; color: #888;
+    padding: 4px 28px 12px;
+  }
+
+  /* Form area */
+  .form-area { padding: 10px 28px 18px; }
+
+  /* Grid */
+  .fg { display: grid; gap: 14px; margin-bottom: 14px; }
+  .fg-2 { grid-template-columns: 1fr 1fr; }
+  .fg-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  /* Field wrapper with floating label */
+  .fw { position: relative; }
+  .fw label {
+    position: absolute; top: 12px; left: 14px;
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase;
+    color: #555; pointer-events: none; transition: all 0.18s; z-index: 1;
+  }
+  .fw.filled label { top: 8px; font-size: 9.5px; color: #333; }
+  .fw input:focus ~ label, .fw select:focus ~ label { top: 8px; font-size: 9.5px; color: #333; }
+
+  .fw input, .fw select {
+    width: 100%; border: 1.5px solid #e5e5e5; border-radius: 8px;
+    padding: 24px 14px 8px; font-size: 13.5px; font-weight: 500;
+    font-family: 'Poppins', sans-serif; color: #111;
+    background: #fafafa; outline: none; appearance: none; -webkit-appearance: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .fw select { cursor: pointer; padding-right: 36px; }
+  .fw input:focus, .fw select:focus {
+    border-color: #555; background: #fff;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+  }
+  .fw input::placeholder { color: transparent; }
+  .fw .arr {
+    position: absolute; right: 12px; top: 50%;
+    transform: translateY(-50%); pointer-events: none;
+  }
+  .fw .arr svg { width: 14px; height: 14px; display: block; fill: none; stroke: #bbb; stroke-width: 2; }
+
+  /* Contact field */
+  .cf-box {
+    border: 1.5px solid #e5e5e5; border-radius: 8px;
+    padding: 10px 14px; background: #fafafa;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .cf-lbl { font-size: 10.5px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: #555; margin-bottom: 2px; }
+  .cf-val { font-size: 13.5px; font-weight: 700; color: #111; }
+  .cf-edit {
+    font-size: 13px; font-weight: 600; color: #d63b2f;
+    border: none; background: none; font-family: 'Poppins', sans-serif; cursor: pointer; flex-shrink: 0;
+  }
+  .cf-edit:hover { text-decoration: underline; }
+
+  /* Note */
+  .form-note { font-size: 11px; color: #888; padding: 0 28px 18px; line-height: 1.6; }
+  .form-note strong { color: #d63b2f; }
+
+  /* Divider */
+  .divider { height: 1px; background: #f0f0f0; }
+
+  /* ✅ FIX 6: Reset Password row — properly styled */
+  .reset-row {
+    padding: 16px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .reset-info { display: flex; align-items: center; gap: 10px; }
+  .reset-icon {
+    width: 36px; height: 36px;
+    background: #fff3f2; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .reset-icon svg { width: 17px; height: 17px; fill: none; stroke: #d63b2f; stroke-width: 2; }
+  .reset-title { font-size: 13.5px; font-weight: 600; color: #111; }
+  .reset-sub { font-size: 11px; color: #999; margin-top: 1px; }
+  .reset-btn {
+    background: none; border: 1.5px solid #d63b2f; border-radius: 8px;
+    padding: 8px 18px; font-size: 13px; font-weight: 600; color: #d63b2f;
+    font-family: 'Poppins', sans-serif; cursor: pointer; transition: all 0.2s;
+  }
+  .reset-btn:hover { background: #d63b2f; color: #fff; }
+
+  /* Membership */
+  .mem-strip {
+    margin: 0 28px 20px;
+    background: linear-gradient(135deg, #d63b2f 0%, #ff6b50 100%);
+    border-radius: 12px; padding: 14px 18px;
+    display: flex; align-items: center; gap: 14px;
+    cursor: pointer; transition: opacity 0.2s;
+  }
+  .mem-strip:hover { opacity: 0.93; }
+  .mem-ico { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .mem-ico svg { width: 22px; height: 22px; fill: #fff; }
+  .mem-body { flex: 1; }
+  .mem-body strong { font-size: 13px; font-weight: 700; color: #fff; display: block; }
+  .mem-body span { font-size: 11.5px; color: rgba(255,255,255,0.82); }
+  .mem-chev svg { width: 16px; height: 16px; fill: none; stroke: rgba(255,255,255,0.7); stroke-width: 2.5; }
+
+  /* Prefs */
+  .pref-block { padding: 18px 28px; }
+  .pref-title { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 10px; }
+  .pref-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
+  .pref-row:last-child { border-bottom: none; }
+  .pref-name { font-size: 13.5px; font-weight: 500; color: #222; }
+  .pref-desc { font-size: 11px; color: #999; margin-top: 2px; }
+  .toggle { width: 42px; height: 23px; background: #ddd; border-radius: 99px; position: relative; cursor: pointer; transition: background 0.25s; flex-shrink: 0; }
+  .toggle.on { background: #d63b2f; }
+  .toggle-knob { position: absolute; top: 3px; left: 3px; width: 17px; height: 17px; background: #fff; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: transform 0.25s cubic-bezier(0.4,0,0.2,1); }
+  .toggle.on .toggle-knob { transform: translateX(19px); }
+
+  /* Logout */
+  .logout-row { padding: 16px 28px; border-top: 1px solid #f0f0f0; }
+  .logout-btn { display: flex; align-items: center; gap: 8px; background: none; border: none; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; color: #d63b2f; cursor: pointer; padding: 0; }
+  .logout-btn:hover { opacity: 0.75; }
+  .logout-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+  /* ── Reset Password Modal ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 200;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal-box {
+    background: #fff;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 460px;
+    padding: 28px 28px 24px;
+    margin: 0 16px;
+    transform: scale(0.95);
+    transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+  }
+  .modal-overlay.open .modal-box { transform: scale(1); }
+
+  .modal-close {
+    position: absolute; top: 14px; right: 14px;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: #f5f5f5; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: #555; transition: background 0.2s;
+  }
+  .modal-close:hover { background: #ffe5e0; color: #d63b2f; }
+
+  .modal-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .modal-head svg { width: 22px; height: 22px; fill: none; stroke: #555; stroke-width: 2; }
+  .modal-title { font-size: 18px; font-weight: 700; color: #111; }
+  .modal-desc { font-size: 12.5px; color: #666; line-height: 1.6; margin-bottom: 20px; }
+
+  /* Password field */
+  .pw-field { position: relative; margin-bottom: 14px; }
+  .pw-field input {
+    width: 100%; border: 1.5px solid #e5e5e5; border-radius: 8px;
+    padding: 14px 44px 14px 14px; font-size: 13.5px;
+    font-family: 'Poppins', sans-serif; color: #222;
+    background: #fafafa; outline: none;
+    transition: border-color 0.2s;
+  }
+  .pw-field input:focus { border-color: #d63b2f; background: #fff; box-shadow: 0 0 0 3px rgba(214,59,47,0.07); }
+  .pw-field input::placeholder { color: #aaa; font-size: 12px; letter-spacing: 0.3px; text-transform: uppercase; font-weight: 600; }
+  .pw-eye {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; padding: 4px;
+    color: #aaa; transition: color 0.2s;
+  }
+  .pw-eye:hover { color: #555; }
+  .pw-eye svg { width: 18px; height: 18px; display: block; fill: none; stroke: currentColor; stroke-width: 2; }
+
+  .forgot-link { font-size: 13px; font-weight: 600; color: #1565c0; cursor: pointer; margin-bottom: 20px; display: inline-block; }
+  .forgot-link:hover { text-decoration: underline; }
+
+  .modal-btns { display: flex; gap: 12px; }
+  .btn-cancel {
+    flex: 1; border: 1.5px solid #d63b2f; background: #fff;
+    border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 600;
+    color: #d63b2f; font-family: 'Poppins', sans-serif; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-cancel:hover { background: #fff3f2; }
+  .btn-reset {
+    flex: 1.5; background: #d63b2f; border: none;
+    border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 600;
+    color: #fff; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; letter-spacing: 0.5px;
+  }
+  .btn-reset:hover { background: #b83228; }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: #1a1a1a; color: #fff; padding: 11px 22px; border-radius: 10px;
+    font-size: 13px; font-weight: 500; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    z-index: 999; white-space: nowrap; display: flex; align-items: center; gap: 8px;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast svg { width: 16px; height: 16px; fill: #4caf50; flex-shrink: 0; }
+
+  /* Error */
+  .pw-error { font-size: 11.5px; color: #d63b2f; margin-top: -10px; margin-bottom: 10px; display: none; }
+  .pw-error.show { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ── Topbar ── (✅ Nav links removed, myCash properly placed) -->
+<div class="topbar">
+  <a class="topbar-logo" href="#">
+    <div class="logo-box">
+      <svg viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+    </div>
+    <div>
+      <span class="logo-name">Nextrip</span>
+      <span class="logo-sub">Premium Holidays</span>
+    </div>
+  </a>
+  <div class="topbar-right">
+    <div class="mycash-btn">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" fill="none" stroke="#f9a825" stroke-width="2"/></svg>
+      ⭕ myCash ₹0 ›
+    </div>
+  </div>
+</div>
+
+<!-- ── Hero Banner ── -->
+<div class="hero-banner">
+  <!-- ✅ FIX 4: Avatar with background image -->
+  <div class="avatar-area">
+    <div class="avatar-wrap" onclick="document.getElementById('avatarInput').click()">
+      <div class="avatar-circle" id="avatarEl">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="38" height="38"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+      </div>
+      <div class="avatar-edit-overlay">
+        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <span>Add Photo</span>
+      </div>
+    </div>
+    <!-- ✅ FIX 5: Phone & email clearly visible with pill background -->
+    <div class="hero-meta">
+      <div class="hero-row">
+        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.86a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
+        <span id="dispPhone">+91-75578 34291</span>
+      </div>
+      <div class="hero-row">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span id="dispEmail">nextrip.user@gmail.com</span>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="previewAvatar(this)" />
+
+<!-- ── Page ── -->
+<div class="page-wrap">
+<div class="profile-card">
+
+  <!-- Header -->
+  <div class="card-header">
+    <div class="card-title">My Profile</div>
+    <button class="save-btn" onclick="saveProfile()">SAVE</button>
+  </div>
+
+  <!-- Personalize -->
+  <div class="personalize-strip">
+    <div class="ps-icon">🏖️</div>
+    <div class="ps-txt">
+      <strong>Let us personalize your travel!</strong>
+      <span>Tell us your details to help us plan better trips for you!</span>
+    </div>
+    <span class="ps-link">Add Gender →</span>
+  </div>
+
+  <!-- General Information -->
+  <div class="sec-label">General Information</div>
+  <div class="form-area">
+    <div class="fg fg-2">
+      <div class="fw filled">
+        <input type="text" id="fFirst" placeholder="First & Middle Name" />
+        <label>FIRST &amp; MIDDLE NAME</label>
+      </div>
+      <div class="fw filled">
+        <input type="text" id="fLast" placeholder="Last Name" />
+        <label>LAST NAME</label>
+      </div>
+    </div>
+    <div class="fg fg-3">
+      <div class="fw filled">
+        <select id="fGender">
+          <option value="">Select</option>
+          <option>Male</option><option>Female</option><option>Other</option>
+        </select>
+        <label>GENDER</label>
+        <span class="arr"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="fw filled">
+        <input type="date" id="fDob" />
+        <label>DATE OF BIRTH</label>
+      </div>
+      <div class="fw filled">
+        <select id="fNationality">
+          <option value="">Select</option>
+          <option selected>Indian</option><option>American</option><option>British</option><option>Other</option>
+        </select>
+        <label>NATIONALITY</label>
+        <span class="arr"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+    </div>
+    <div class="fg fg-2">
+      <div class="fw filled">
+        <select id="fMarital">
+          <option value="">Select</option>
+          <option>Single</option><option>Married</option><option>Other</option>
+        </select>
+        <label>MARITAL STATUS</label>
+        <span class="arr"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="fw filled">
+        <input type="date" id="fAnniversary" />
+        <label>ANNIVERSARY</label>
+      </div>
+    </div>
+    <div class="fg fg-2">
+      <div class="fw filled">
+        <input type="text" id="fCity" placeholder="City of Residence" />
+        <label>CITY OF RESIDENCE</label>
+      </div>
+      <div class="fw filled">
+        <select id="fState">
+          <option value="">Select</option>
+          <option>Delhi</option><option>Gujarat</option><option>Maharashtra</option>
+          <option>Karnataka</option><option>Tamil Nadu</option><option>Rajasthan</option>
+          <option>Uttar Pradesh</option><option>West Bengal</option><option>Other</option>
+        </select>
+        <label>STATE</label>
+        <span class="arr"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#999;margin-top:-4px;">Required for GST purpose on your tax invoice</p>
+  </div>
+
+  <!-- Contact Details -->
+  <div class="divider"></div>
+  <div class="sec-label">Contact Details</div>
+  <div class="sec-sub">Add contact information to receive booking details &amp; other alerts</div>
+  <!-- ✅ FIX 5: Phone & email with correct random number -->
+  <div class="form-area" style="padding-top:0;">
+    <div class="fg fg-2">
+      <div class="cf-box">
+        <div>
+          <div class="cf-lbl">MOBILE NUMBER</div>
+          <div class="cf-val" id="cfPhone">+91-75578 34291</div>
+        </div>
+        <button class="cf-edit" onclick="editContact('phone')">Edit</button>
+      </div>
+      <div class="cf-box">
+        <div>
+          <div class="cf-lbl">EMAIL ID</div>
+          <div class="cf-val" id="cfEmail">nextrip.user@gmail.com</div>
+        </div>
+        <button class="cf-edit" onclick="editContact('email')">Edit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Documents Details -->
+  <div class="divider"></div>
+  <div class="sec-label">Documents Details</div>
+  <div class="form-area">
+    <div class="fg fg-2">
+      <div class="fw filled">
+        <input type="text" id="fPassport" placeholder="Passport No." />
+        <label>PASSPORT NO.</label>
+      </div>
+      <div class="fw filled">
+        <input type="date" id="fExpiry" />
+        <label>EXPIRY DATE</label>
+      </div>
+    </div>
+    <div class="fg fg-2">
+      <div class="fw filled">
+        <select id="fIssuing">
+          <option value="">Select</option>
+          <option selected>India</option><option>USA</option><option>UK</option><option>Other</option>
+        </select>
+        <label>ISSUING COUNTRY</label>
+        <span class="arr"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+      </div>
+      <div class="fw filled">
+        <input type="text" id="fPan" placeholder="PAN Card Number" />
+        <label>PAN CARD NUMBER</label>
+      </div>
+    </div>
+  </div>
+  <div class="form-note"><strong>NOTE:</strong> Your PAN No. will only be used for international bookings as per RBI Guidelines</div>
+
+  <!-- ✅ Reset Password section moved AFTER Logout -->
+  <!-- Membership -->
+  <div class="divider"></div>
+  <div class="sec-label" style="margin-bottom:12px;">Membership</div>
+  <div class="mem-strip">
+    <div class="mem-ico">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </div>
+    <div class="mem-body">
+      <strong>Elite Member · 84,290 pts</strong>
+      <span>15,710 pts away from Diamond tier</span>
+    </div>
+    <div class="mem-chev">
+      <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+  </div>
+
+  <!-- Preferences -->
+  <div class="divider"></div>
+  <div class="pref-block">
+    <div class="pref-title">Preferences</div>
+    <div class="pref-row">
+      <div><div class="pref-name">Email Notifications</div><div class="pref-desc">Deals, offers &amp; booking updates</div></div>
+      <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+    </div>
+    <div class="pref-row">
+      <div><div class="pref-name">SMS Alerts</div><div class="pref-desc">Booking confirmations &amp; reminders</div></div>
+      <div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+    </div>
+    <div class="pref-row">
+      <div><div class="pref-name">WhatsApp Updates</div><div class="pref-desc">Trip info &amp; travel alerts</div></div>
+      <div class="toggle" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+    </div>
+  </div>
+
+  <!-- Logout -->
+  <div class="logout-row">
+    <button class="logout-btn">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Log Out
+    </button>
+  </div>
+
+  <!-- ✅ Reset Password — Logout ke neeche -->
+  <div class="divider"></div>
+  <div class="reset-row">
+    <div class="reset-info">
+      <div class="reset-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div>
+        <div class="reset-title">Reset Password</div>
+        <div class="reset-sub">Update your account password securely</div>
+      </div>
+    </div>
+    <button class="reset-btn" onclick="openResetModal()">Reset Password</button>
+  </div>
+
+</div><!-- /profile-card -->
+</div><!-- /page-wrap -->
+
+<!-- ── Reset Password Modal ── -->
+<div class="modal-overlay" id="resetModal" onclick="closeModalBg(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeResetModal()">✕</button>
+    <div class="modal-head">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <div class="modal-title">Reset Password</div>
+    </div>
+    <div class="modal-desc">Your password must be at least 8 characters long and include both small and uppercase letters, numbers, and special characters (e.g., $!@%)</div>
+
+    <div class="pw-field">
+      <input type="password" id="oldPw" placeholder="OLD PASSWORD" />
+      <button class="pw-eye" onclick="togglePw('oldPw', this)" type="button">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <div class="pw-error" id="errOld">Please enter your current password.</div>
+
+    <div class="pw-field">
+      <input type="password" id="newPw" placeholder="NEW PASSWORD" />
+      <button class="pw-eye" onclick="togglePw('newPw', this)" type="button">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <div class="pw-error" id="errNew">Password must be at least 8 characters.</div>
+
+    <span class="forgot-link">Forgot your password?</span>
+
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeResetModal()">Cancel</button>
+      <button class="btn-reset" onclick="doReset()">RESET PASSWORD</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/></svg>
+  <span id="toastMsg">Profile saved successfully!</span>
+</div>
+
+<script>
+  // ── Avatar ──
+  function previewAvatar(input) {
+    if (input.files && input.files[0]) {
+      const r = new FileReader();
+      r.onload = e => {
+        const el = document.getElementById('avatarEl');
+        el.style.background = 'none';
+        el.innerHTML = `<img src="${e.target.result}" alt="avatar" />`;
+      };
+      r.readAsDataURL(input.files[0]);
+    }
+  }
+
+  // ── Save ──
+  function saveProfile() {
+    showToast('Profile saved successfully!');
+  }
+
+  // ── Edit contact ──
+  function editContact(type) {
+    if (type === 'phone') {
+      const cur = document.getElementById('cfPhone').textContent;
+      const v = prompt('Enter new mobile number:', cur);
+      if (v && v.trim()) {
+        document.getElementById('cfPhone').textContent = v.trim();
+        document.getElementById('dispPhone').textContent = v.trim();
+      }
+    } else {
+      const cur = document.getElementById('cfEmail').textContent;
+      const v = prompt('Enter new email:', cur);
+      if (v && v.trim()) {
+        document.getElementById('cfEmail').textContent = v.trim();
+        document.getElementById('dispEmail').textContent = v.trim();
+      }
+    }
+  }
+
+  // ── Reset Password Modal ──
+  function openResetModal() {
+    document.getElementById('oldPw').value = '';
+    document.getElementById('newPw').value = '';
+    document.getElementById('errOld').classList.remove('show');
+    document.getElementById('errNew').classList.remove('show');
+    document.getElementById('resetModal').classList.add('open');
+  }
+  function closeResetModal() {
+    document.getElementById('resetModal').classList.remove('open');
+  }
+  function closeModalBg(e) {
+    if (e.target === document.getElementById('resetModal')) closeResetModal();
+  }
+
+  function togglePw(id, btn) {
+    const inp = document.getElementById(id);
+    const isText = inp.type === 'text';
+    inp.type = isText ? 'password' : 'text';
+    btn.querySelector('svg').style.opacity = isText ? '1' : '0.4';
+  }
+
+  function doReset() {
+    const old = document.getElementById('oldPw').value.trim();
+    const nw  = document.getElementById('newPw').value.trim();
+    let ok = true;
+    if (!old) { document.getElementById('errOld').classList.add('show'); ok = false; }
+    else document.getElementById('errOld').classList.remove('show');
+    if (nw.length < 8) { document.getElementById('errNew').classList.add('show'); ok = false; }
+    else document.getElementById('errNew').classList.remove('show');
+    if (!ok) return;
+    closeResetModal();
+    showToast('Password reset successfully!');
+  }
+
+  // ── Toast ──
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+</script>
+</body>
+</html>

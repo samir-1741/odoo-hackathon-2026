@@ -1,0 +1,11 @@
+/* admin-layout.component.scss */
+
+/* Custom scrollbar hiding for a cleaner UI in the sidebar */
+.overflow-y-auto::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.overflow-y-auto {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
