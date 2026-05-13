@@ -9,7 +9,7 @@
 | Name | Role | GitHub |
 |------|------|--------|
 | Atik Saiyad | Backend + Integration |@ATIKSAIYAD27-github |
-| samir sumra | Frontend (Angular/HTML/CSS)  |samir-1741 - github
+| samir sumra | Frontend (Angular UI/UX)  |samir-1741 - github
 | krish nayi | Database + Testing  |krishnayee2276-github
 
 ---
@@ -18,9 +18,9 @@
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | HTML, CSS, JavaScript |
-| Backend | node.js|
-| Database |  SQL |
+| Frontend |Angular, HTML, CSS, TypeScript |
+| Backend |Node.js + Express.js|
+| Database | SQL / MySQL|
 | Version Control | Git + GitHub |
 
 ---
@@ -31,20 +31,24 @@
 odoo-hackathon-2026/
 │
 ├── frontend/
-│   ├── index.html      ← Main UI
-│   ├── style.css       ← Styling
-│   └── app.js          ← Frontend Logic
+│   ├── src/
+│   │   ├── app/
+│   │   ├── assets/
+│   │   └── environments/
+│   ├── angular.json
+│   └── package.json
 │
 ├── backend/
-│   ├── app.py          ← Flask Server + APIs
-│   ├── database.py     ← DB Connection
-│   └── requirements.txt
+│   ├── server.js          ← Express Server + APIs
+│   ├── routes/
+│   ├── controllers/
+│   ├── config/
+│   └── package.json
 │
 ├── database/
-│   └── schema.sql      ← Database Tables
+│   └── schema.sql         ← Database Tables
 │
-└── README.md
-```
+└── README.md`
 
 ---
 
@@ -53,34 +57,34 @@ odoo-hackathon-2026/
 ### Backend Setup
 ```bash
 cd backend
-pip install -r requirements.txt
-python app.py
+npm install
+npm start
 ```
 Server runs at: `http://localhost:5000`
 
 ### Frontend Setup
 ```bash
 cd frontend
-# Open index.html in browser directly
-# OR use Live Server extension in VS Code
+npm install
+ng serve
 ```
 
 ---
 
 ## 🔗 API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/` | Check server status |
-| GET | `/api/items` | Get all items |
-| POST | `/api/items` | Add new item |
-| DELETE | `/api/items/<id>` | Delete item |
+| Method | Endpoint       | Description         |
+| ------ | -------------- | ------------------- |
+| GET    | /              | Check server status |
+| GET    | /api/items     | Get all items       |
+| POST   | /api/items     | Add new item        |
+| DELETE | /api/items/:id | Delete item         |
+
 
 ---
+📋 Problem Statement
 
-## 📋 Problem Statement
-
-> [Will be updated once announced]
+[Will be updated once announced]
 
 ---
 
