@@ -9,7 +9,7 @@
 | Name | Role | GitHub |
 |------|------|--------|
 | Atik Saiyad | Backend + Integration |@ATIKSAIYAD27-github |
-| samir sumra | Frontend (React/HTML/CSS)  |samir-1741 - github
+| samir sumra | Frontend (Angular/HTML/CSS)  |samir-1741 - github
 | krish nayi | Database + Testing  |krishnayee2276-github
 
 ---
@@ -19,7 +19,7 @@
 | Layer | Technology |
 |-------|-----------|
 | Frontend | HTML, CSS, JavaScript |
-| Backend | Python (Flask) |
+| Backend | node.js|
 | Database |  SQL |
 | Version Control | Git + GitHub |
 
